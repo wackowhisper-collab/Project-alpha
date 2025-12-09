@@ -1,0 +1,30 @@
+.github/workflows
+name: Unzip Master Package
+
+on:
+  push:
+    paths:
+      - "daddy_initiative_full_deploy_pack.zip"
+  workflow_dispatch:
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Install unzip
+      run: sudo apt-get install unzip
+
+    - name: Unzip Master
+      run: unzip -o daddy_initiative_full_deploy_pack.zip -d ./project
+
+    - name: Commit Extracted Files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -m "Auto-unzip master package (FULL DEPLOY MODE)"
+        git push
